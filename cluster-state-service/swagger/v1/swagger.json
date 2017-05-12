@@ -22,6 +22,17 @@
     "application/json"
   ],
   "paths": {
+    "/ping": {
+      "get": {
+        "description": "Ping server for health status",
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/instances/{cluster}/{arn}": {
       "get": {
         "description": "Get instance using cluster name and instance ARN",

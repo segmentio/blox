@@ -14,19 +14,23 @@
 package v1
 
 import (
+	"net/http"
+
 	"github.com/blox/blox/cluster-state-service/handler/store"
 )
 
-type APIs struct {
-	GeneralApis           GeneralAPIs
-	TaskApis              TaskAPIs
-	ContainerInstanceApis ContainerInstanceAPIs
+// TaskAPIs encapsulates the backend datastore with which the task APIs interact
+type GeneralAPIs struct {
+	taskStore store.TaskStore
 }
 
-func NewAPIs(stores store.Stores) APIs {
-	return APIs{
-		GeneralApis:           NewGeneralAPIs(),
-		TaskApis:              NewTaskAPIs(stores.TaskStore),
-		ContainerInstanceApis: NewContainerInstanceAPIs(stores.ContainerInstanceStore),
-	}
+// NewTaskAPIs initializes the TaskAPIs struct
+func NewGeneralAPIs() GeneralAPIs {
+	return GeneralAPIs{}
+}
+
+// Ping is used to perform server health checks
+func (api GeneralAPIs) Ping(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set(contentTypeKey, contentTypeJSON)
+	w.WriteHeader(http.StatusOK)
 }

@@ -20,6 +20,8 @@ import (
 
 // TODO: add a map of path and query keys and use the map in task apis instead of hardcoding strings
 var (
+	getPingPath = "/ping"
+
 	// Stripping off '^' and '$' from the beginning and end of regexes respectively for the router
 	clusterNameRegex = string(regex.ClusterNameRegex[1 : len(regex.ClusterNameRegex)-1])
 	clusterARNRegex  = string(regex.ClusterARNRegex[1 : len(regex.ClusterARNRegex)-1])
@@ -39,6 +41,12 @@ var (
 func NewRouter(apis APIs) *mux.Router {
 	r := mux.NewRouter().StrictSlash(true)
 	s := r.Path("/v1").Subrouter()
+
+	// Health
+
+	s.Path("/ping").
+		Methods("GET").
+		HandlerFunc(apis.GeneralApis.Ping)
 
 	// Tasks
 
